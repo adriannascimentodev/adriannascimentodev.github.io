@@ -44,7 +44,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --paper: #f3efe6;
@@ -242,7 +242,14 @@
   .print-contacts { display: none; }
   @page { size: A4; margin: 13mm 14mm; }
   @media print {
-    :root { --paper:#fff; --paper-2:#f4f1ea; --ink:#111; --ink-2:#333; --muted:#666; --line:#ddd6c8; --accent:#c23a12; }
+    :root { --paper:#fff; --paper-2:#f4f1ea; --ink:#111; --ink-2:#333; --muted:#666; --line:#ddd6c8; --accent:#0b7a5e; }
+    .hero h1, .head h2, .job h3, .svc h3, .edu-row b, .contact h2 { font-family: "Bricolage Grotesque", var(--sans) !important; font-weight: 800 !important; letter-spacing: -0.02em; }
+    .hero h1 em, .contact h2 em { font-style: normal; }
+    .hero { border-top: 4px solid #04110d; padding-top: 10px; }
+    .services { grid-template-columns: repeat(3,1fr) !important; } .svc + .svc { padding-left: 12px !important; border-left: 1px solid var(--line) !important; }
+    .stack { grid-template-columns: repeat(4,1fr) !important; } .stack > div + div { padding-left: 10px !important; border-left: 1px solid var(--line) !important; border-bottom: none !important; }
+    .side-note { flex-direction: row !important; gap: 12px !important; }
+    .edu-row { grid-template-columns: 1fr 1fr auto !important; } .edu-row .where { grid-column: auto !important; grid-row: auto !important; } .edu-row .pill { grid-row: auto !important; grid-column: auto !important; }
     body { font-size: 10.5px; line-height: 1.45; }
     header.top, .ticker, .cta, .contact p:not(.print-contacts), .status .dot, footer { display: none !important; }
     .js .reveal { opacity: 1 !important; transform: none !important; }
@@ -374,8 +381,8 @@
               <span class="tagline">Portal com catálogo, busca e filtros pela API GraphQL da AniList, ranking, calendário, blog e contas de usuário. Reescrito de Firebase para Astro + Cloudflare Workers + D1, com páginas montadas no servidor, cache na borda, dados estruturados e painel administrativo próprio.</span></div>
             <div class="proj"><b>Site de currículos</b><span class="pill live">● no ar</span>
               <span class="tagline">Captação de clientes para criação de currículos em Word, PDF, Canva e landing page.</span></div>
-            <div class="proj"><b>NascimentoReviews</b><span class="pill live">● no ar</span>
-              <span class="tagline">Site de reviews com conteúdo voltado a tráfego orgânico e monetização.</span></div>
+            <div class="proj"><b>Dinheiro e Reviews</b><span class="pill live">● no ar</span>
+              <span class="tagline">Vitrine com mais de 50 reviews de produtos, preços de referência e comparações (dinheiro-e-reviews.pages.dev).</span></div>
             <div class="proj"><b>Site imobiliário</b><span class="pill">em produção</span>
               <span class="tagline">Para cliente: catálogo de imóveis e blog com painel de publicação.</span></div>
           </div>

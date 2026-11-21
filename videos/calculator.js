@@ -35,10 +35,8 @@ if (typeof document !== 'undefined') {
   $('price-form').addEventListener('change',update);
   $('price-form').addEventListener('submit',event=>event.preventDefault());
   $('scenario').addEventListener('change',updateReach);
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   function motionState(paused) {document.body.classList.toggle('motion-paused',paused);document.body.classList.toggle('motion-enabled',!paused);$('motion').setAttribute('aria-pressed',String(paused));$('motion').textContent = paused ? 'Animações pausadas' : 'Pausar animações';$('motion').setAttribute('aria-label',paused ? 'Retomar animações' : 'Pausar animações');}
-  motionState(reduced.matches);
+  motionState(false);
   $('motion').addEventListener('click',()=>motionState(!document.body.classList.contains('motion-paused')));
-  reduced.addEventListener('change',()=>motionState(reduced.matches));
   update();
 }

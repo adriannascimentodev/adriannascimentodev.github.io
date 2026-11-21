@@ -1,12 +1,9 @@
 'use strict';
 // Values are estimates for the published scope, not a checkout or reach forecast.
-function calculatePrice({duration, quantity, research, editing, captions}) {
-  if (![30,60].includes(duration) || ![1,4,8].includes(quantity) || ![0,150].includes(research) || ![0,180].includes(editing) || typeof captions !== 'boolean') throw new RangeError('Opção inválida');
-  const base = duration === 30 ? 280 : 350;
-  const unit = base + research + editing + (captions ? 50 : 0);
-  const subtotal = unit * quantity;
-  const discount = quantity >= 4 ? subtotal * .10 : 0;
-  return {base, unit, subtotal, discount, total: subtotal-discount, discountedUnit:(subtotal-discount)/quantity};
+function calculatePrice({quantity, materials}) {
+  if (![1,4,8,10].includes(quantity) || !['provided','search'].includes(materials)) throw new RangeError('Opção inválida');
+  const unit = materials === 'search' ? 70 : 50;
+  return {unit,total:unit*quantity};
 }
 if (typeof module !== 'undefined') module.exports = {calculatePrice};
 if (typeof document !== 'undefined') {
@@ -14,16 +11,15 @@ if (typeof document !== 'undefined') {
   const money = value => value.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:2});
   const views = value => value >= 1000000 ? `${value / 1000000} ${value === 1000000 ? 'milhão' : 'milhões'}` : `${value / 1000} mil`;
   function update() {
-    const duration = +$('duration').value, quantity = +$('quantity').value;
-    const research = +$('research').value, editing = +$('editing').value, captions = $('captions').checked;
-    const result = calculatePrice({duration,quantity,research,editing,captions});
-    $('package-label').textContent = quantity === 1 ? '1 vídeo avulso' : `${quantity} vídeos por mês`;
+    const quantity = +$('quantity').value, materials = $('materials').value;
+    const result = calculatePrice({quantity,materials});
+    $('package-label').textContent = quantity === 1 ? '1 vídeo avulso · até 60 segundos' : quantity+' vídeos por mês · até 60 segundos cada';
     $('total').textContent = money(result.total);
-    $('unit').textContent = `${money(result.discountedUnit)} por vídeo`;
-    const rows = [[`${quantity} × ${money(result.unit)}`,money(result.subtotal)]];
-    if (result.discount) rows.push(['Desconto de pacote (10%)',`− ${money(result.discount)}`]);
+    $('unit').textContent = money(result.unit)+' por vídeo';
+    const rows = [['Edição com todos os materiais enviados',quantity+' × R$ 50']];
+    if (materials === 'search') rows.push(['Busca de qualquer material na internet',quantity+' × R$ 20']);
     $('breakdown').replaceChildren(...rows.map(([label,value])=>{const row=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value;row.append(dt,dd);return row;}));
-    const message = `Olá, Adrian! Quero conversar sobre ${quantity === 1 ? '1 vídeo avulso' : quantity+' vídeos por mês'}, de até ${duration} segundos. Roteiro: ${research ? 'com pesquisa aprofundada' : 'a partir do briefing'}. Edição: ${editing ? 'avançada, com animações personalizadas' : 'dinâmica'}. Legendas completas: ${captions ? 'sim' : 'não'}. Estimativa: ${money(result.total)} (${money(result.discountedUnit)}/vídeo), sujeita à avaliação do briefing. Meu tema é: `;
+    const message = 'Olá, Adrian! Quero '+(quantity === 1 ? '1 vídeo avulso' : quantity+' vídeos por mês')+', de até 60 segundos. Materiais: '+(materials === 'search' ? 'preciso que você busque material na internet' : 'vou enviar toda a base pronta')+'. Estimativa: '+money(result.total)+' ('+money(result.unit)+'/vídeo), com capa simples. Entendo que o serviço é online, sem filmagem ou gravação presencial. Meu tema é: ';
     $('quote').href = 'https://wa.me/5598984450784?text='+encodeURIComponent(message);
     updateReach();
   }
